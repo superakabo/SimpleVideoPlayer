@@ -16,21 +16,24 @@ class SimpleVideoPlayerController extends VideoPlayerController {
   final bool _cache;
   StreamSubscription<FileResponse>? _streamSubscription;
 
+  String _dataSource = '';
   @override
-  String dataSource = '';
+  String get dataSource => _dataSource;
 
+  DataSourceType _dataSourceType;
   @override
-  DataSourceType dataSourceType = DataSourceType.network;
+  DataSourceType get dataSourceType => _dataSourceType;
 
   SimpleVideoPlayerController._network(
-    this.dataSource,
+    this._dataSource,
     this._cache, {
     VideoFormat? formatHint,
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
     Map<String, String> httpHeaders = const {},
-  }) : super.network(
-          dataSource,
+  })  : this._dataSourceType = DataSourceType.network,
+        super.network(
+          _dataSource,
           formatHint: formatHint,
           closedCaptionFile: closedCaptionFile,
           videoPlayerOptions: videoPlayerOptions,
@@ -38,13 +41,14 @@ class SimpleVideoPlayerController extends VideoPlayerController {
         );
 
   SimpleVideoPlayerController._asset(
-    this.dataSource, {
+    this._dataSource, {
     String? package,
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   })  : this._cache = false,
+        this._dataSourceType = DataSourceType.asset,
         super.asset(
-          dataSource,
+          _dataSource,
           package: package,
           closedCaptionFile: closedCaptionFile,
           videoPlayerOptions: videoPlayerOptions,
@@ -55,6 +59,7 @@ class SimpleVideoPlayerController extends VideoPlayerController {
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   })  : this._cache = false,
+        this._dataSourceType = DataSourceType.file,
         super.file(
           file,
           closedCaptionFile: closedCaptionFile,
@@ -113,8 +118,8 @@ class SimpleVideoPlayerController extends VideoPlayerController {
       }
 
       if (response is FileInfo) {
-        dataSource = 'file://${response.file.path}';
-        dataSourceType = (response.source == FileSource.Cache) ? DataSourceType.file : DataSourceType.network;
+        _dataSource = 'file://${response.file.path}';
+        _dataSourceType = (response.source == FileSource.Cache) ? DataSourceType.file : DataSourceType.network;
         _fileDownloadCompleter.complete();
       }
     });
