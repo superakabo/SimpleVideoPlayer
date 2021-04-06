@@ -11,12 +11,14 @@ class SimpleVideoPlayer extends StatefulWidget {
   final bool autoPlay;
   final bool loop;
   final bool mute;
+  final bool autoDispose;
 
   SimpleVideoPlayer({
     required this.videoPlayerController,
     this.autoPlay = true,
     this.loop = true,
     this.mute = true,
+    this.autoDispose = true,
   });
 
   @override
@@ -28,6 +30,7 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
 
   @override
   void dispose() {
+    if (!widget.autoDispose) return;
     widget.videoPlayerController.dispose();
     _animationController.dispose();
     super.dispose();

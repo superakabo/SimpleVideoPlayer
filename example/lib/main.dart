@@ -23,23 +23,41 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Example extends StatelessWidget {
-  static const videoUrl = 'https://storage.googleapis.com/whatsad-84167.appspot.com/ads/p835.mp4';
-  static const thumbnail = 'https://storage.googleapis.com/whatsad-84167.appspot.com/ads/p835.jpg';
-  late final videoPlayerController = SimpleVideoPlayerController.fromNetwork(videoUrl, thumbnail: thumbnail);
+class Example extends StatefulWidget {
+  @override
+  _ExampleState createState() => _ExampleState();
+}
+
+class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
+  late final _videoPlayerController = SimpleVideoPlayerController.fromNetwork(
+    'https://storage.googleapis.com/whatsad-84167.appspot.com/ads/p835.mp4',
+    thumbnail: 'https://storage.googleapis.com/whatsad-84167.appspot.com/ads/p835.jpg',
+  );
+  late final _animationController = AnimationController(vsync: this);
+
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: SimpleVideoPlayer(
-        videoPlayerController: videoPlayerController,
+        videoPlayerController: _videoPlayerController,
+        autoDispose: false,
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Play / Pause',
-        child: Icon(Icons.add),
+        child: AnimatedIcon(
+          icon: AnimatedIcons.play_pause,
+          progress: _animationController,
+        ),
         onPressed: () async {
-          (videoPlayerController.value.isPlaying) ? videoPlayerController.pause() : videoPlayerController.play();
+          (_videoPlayerController.value.isPlaying) ? _videoPlayerController.pause() : _videoPlayerController.play();
         },
       ),
     );
