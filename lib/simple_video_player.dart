@@ -100,7 +100,7 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                     )
 
                   /// Mark: video thumbnail and download progress indicator
-                  : ValueListenableBuilder<double>(
+                  : ValueListenableBuilder<double?>(
                       key: ValueKey(false),
                       valueListenable: widget.videoPlayerController.downloadProgressNotifier,
                       builder: (_, progress, __) {
