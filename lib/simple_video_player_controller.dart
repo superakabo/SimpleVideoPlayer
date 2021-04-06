@@ -12,7 +12,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:video_player/video_player.dart';
 
 class SimpleVideoPlayerController extends VideoPlayerController {
-  final downloadProgressNotifier = ValueNotifier<double?>(0);
+  final downloadProgressNotifier = ValueNotifier<double?>(null);
   final bool _cache;
 
   String _thumbnail = '';
