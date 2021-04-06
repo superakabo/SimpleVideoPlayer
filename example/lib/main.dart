@@ -33,7 +33,11 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
     'https://storage.googleapis.com/whatsad-84167.appspot.com/ads/p835.mp4',
     thumbnail: 'https://storage.googleapis.com/whatsad-84167.appspot.com/ads/p835.jpg',
   );
-  late final _animationController = AnimationController(vsync: this);
+
+  late final _animationController = AnimationController(
+    vsync: this,
+    duration: Duration(milliseconds: 330),
+  );
 
   @override
   void dispose() {
@@ -57,7 +61,13 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
           progress: _animationController,
         ),
         onPressed: () async {
-          (_videoPlayerController.value.isPlaying) ? _videoPlayerController.pause() : _videoPlayerController.play();
+          if (_videoPlayerController.value.isPlaying) {
+            _animationController.forward();
+            _videoPlayerController.pause();
+          } else {
+            _animationController.reverse();
+            _videoPlayerController.play();
+          }
         },
       ),
     );
