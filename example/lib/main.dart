@@ -49,7 +49,12 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Simple Video Player Demo',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: SimpleVideoPlayer(
         videoPlayerController: _videoPlayerController,
         autoDispose: false,
