@@ -12,26 +12,27 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:video_player/video_player.dart';
 
 class SimpleVideoPlayerController extends VideoPlayerController {
-  final downloadProgressNotifier = ValueNotifier<int>(0);
+  final downloadProgressNotifier = ValueNotifier<double>(0);
   final bool _cache;
+
+  String _thumbnail = '';
+  String get thumbnail => _thumbnail;
+
   StreamSubscription<FileResponse>? _streamSubscription;
 
   String _dataSource = '';
   @override
   String get dataSource => _dataSource;
 
-  DataSourceType _dataSourceType;
-  @override
-  DataSourceType get dataSourceType => _dataSourceType;
-
   SimpleVideoPlayerController._network(
     this._dataSource,
     this._cache, {
+    String thumbnail = '',
     VideoFormat? formatHint,
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
     Map<String, String> httpHeaders = const {},
-  })  : this._dataSourceType = DataSourceType.network,
+  })  : this._thumbnail = thumbnail,
         super.network(
           _dataSource,
           formatHint: formatHint,
@@ -46,7 +47,6 @@ class SimpleVideoPlayerController extends VideoPlayerController {
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   })  : this._cache = false,
-        this._dataSourceType = DataSourceType.asset,
         super.asset(
           _dataSource,
           package: package,
@@ -59,7 +59,6 @@ class SimpleVideoPlayerController extends VideoPlayerController {
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   })  : this._cache = false,
-        this._dataSourceType = DataSourceType.file,
         super.file(
           file,
           closedCaptionFile: closedCaptionFile,
@@ -68,6 +67,7 @@ class SimpleVideoPlayerController extends VideoPlayerController {
 
   factory SimpleVideoPlayerController.fromNetwork(
     String dataSource, {
+    String thumbnail = '',
     VideoFormat? formatHint,
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
@@ -76,6 +76,7 @@ class SimpleVideoPlayerController extends VideoPlayerController {
     return SimpleVideoPlayerController._network(
       dataSource,
       cache,
+      thumbnail: thumbnail,
       formatHint: formatHint,
       closedCaptionFile: closedCaptionFile,
       videoPlayerOptions: videoPlayerOptions,
@@ -114,12 +115,11 @@ class SimpleVideoPlayerController extends VideoPlayerController {
     _streamSubscription = DefaultCacheManager().getFileStream(dataSource, withProgress: true).listen((response) {
       if (response is DownloadProgress) {
         if (response.progress == null) return;
-        downloadProgressNotifier.value = (response.progress! * 100).toInt();
+        downloadProgressNotifier.value = response.progress!;
       }
 
       if (response is FileInfo) {
         _dataSource = 'file://${response.file.path}';
-        _dataSourceType = (response.source == FileSource.Cache) ? DataSourceType.file : DataSourceType.network;
         _fileDownloadCompleter.complete();
       }
     });
