@@ -75,7 +75,7 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
           return AspectRatio(
             aspectRatio: videoPlayerValue.aspectRatio,
             child: AnimatedSwitcher(
-              duration: Duration(milliseconds: 330),
+              duration: Duration(milliseconds: 100),
               child: (videoPlayerValue.isInitialized)
                   ? GestureDetector(
                       key: ValueKey(true),
