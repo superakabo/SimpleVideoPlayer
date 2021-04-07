@@ -52,11 +52,13 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
         }
 
         if (info.visibleFraction >= 0.75) {
-          await widget.videoPlayerController.initialize();
-          widget.videoPlayerController.setLooping(widget.loop);
-          if (widget.mute) widget.videoPlayerController.setVolume(0.0);
-          if (widget.autoPlay) widget.videoPlayerController.play();
-          _animationController.forward();
+          if (!widget.videoPlayerController.value.isInitialized) {
+            await widget.videoPlayerController.initialize();
+            widget.videoPlayerController.setLooping(widget.loop);
+            if (widget.mute) widget.videoPlayerController.setVolume(0.0);
+            if (widget.autoPlay) widget.videoPlayerController.play();
+            _animationController.forward();
+          }
         } else {
           if (widget.videoPlayerController.value.isInitialized) {
             widget.videoPlayerController.pause();
