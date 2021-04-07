@@ -46,7 +46,7 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
   Widget build(BuildContext context) {
     return VisibilityDetector(
       key: ValueKey(widget.videoPlayerController.dataSource),
-      onVisibilityChanged: (VisibilityInfo info) async {
+      onVisibilityChanged: (VisibilityInfo info) {
         if (widget.onVisibilityChanged != null) {
           widget.onVisibilityChanged!(info);
         }
@@ -56,13 +56,13 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
         if (info.visibleFraction >= 0.75) {
           if (playerValue.isInitialized) {
             if (widget.autoPlay) widget.videoPlayerController.play();
-          } else {
-            await widget.videoPlayerController.initialize();
-            if (widget.mute) widget.videoPlayerController.setVolume(0.0);
-            if (widget.autoPlay) widget.videoPlayerController.play();
-            widget.videoPlayerController.setLooping(widget.loop);
-            _animationController.forward();
-          }
+          } else
+            widget.videoPlayerController.initialize().then((_) {
+              if (widget.mute) widget.videoPlayerController.setVolume(0.0);
+              if (widget.autoPlay) widget.videoPlayerController.play();
+              widget.videoPlayerController.setLooping(widget.loop);
+              _animationController.forward();
+            });
         } else if (info.visibleFraction <= 0.15) {
           if (playerValue.isInitialized && playerValue.isPlaying) {
             widget.videoPlayerController.pause();
