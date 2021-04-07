@@ -90,8 +90,8 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                           Positioned(
                             right: 16,
                             bottom: 16,
-                            width: 32,
-                            height: 32,
+                            width: 26,
+                            height: 26,
                             child: ValueListenableBuilder<double>(
                               valueListenable: _animationController,
                               builder: (_, progress, __) {
@@ -100,11 +100,11 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                                   child: DecoratedBox(
                                     decoration: BoxDecoration(
                                       color: Colors.black.withOpacity(0.85),
-                                      borderRadius: BorderRadius.circular(16),
+                                      borderRadius: BorderRadius.circular(13),
                                     ),
                                     child: Icon(
                                       (videoPlayerValue.volume == 0) ? Icons.volume_off : Icons.volume_up_rounded,
-                                      size: 18,
+                                      size: 14,
                                       color: Colors.white,
                                     ),
                                   ),
