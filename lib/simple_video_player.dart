@@ -47,6 +47,8 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
     return VisibilityDetector(
       key: ValueKey(widget.videoPlayerController.dataSource),
       onVisibilityChanged: (VisibilityInfo info) {
+        if (!mounted) return;
+
         if (widget.onVisibilityChanged != null) {
           widget.onVisibilityChanged!(info);
         }
@@ -135,7 +137,9 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                                 ? null
                                 : DecorationImage(
                                     alignment: Alignment.topCenter,
-                                    image: CachedNetworkImageProvider(widget.videoPlayerController.thumbnail),
+                                    image: CachedNetworkImageProvider(
+                                      widget.videoPlayerController.thumbnail,
+                                    ),
                                   ),
                           ),
                           child: Visibility(
