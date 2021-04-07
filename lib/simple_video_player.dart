@@ -12,6 +12,8 @@ class SimpleVideoPlayer extends StatefulWidget {
   final bool loop;
   final bool mute;
   final bool autoDispose;
+  final GestureTapCallback? onDoubleTap;
+  final Function(VisibilityInfo)? onVisibilityChanged;
 
   SimpleVideoPlayer({
     required this.videoPlayerController,
@@ -19,6 +21,8 @@ class SimpleVideoPlayer extends StatefulWidget {
     this.loop = true,
     this.mute = true,
     this.autoDispose = true,
+    this.onDoubleTap,
+    this.onVisibilityChanged,
   });
 
   @override
@@ -41,6 +45,10 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
     return VisibilityDetector(
       key: ValueKey(widget.videoPlayerController.hashCode),
       onVisibilityChanged: (VisibilityInfo info) async {
+        if (widget.onVisibilityChanged != null) {
+          widget.onVisibilityChanged!(info);
+        }
+
         if (info.visibleFraction >= 0.75) {
           await widget.videoPlayerController.initialize();
           widget.videoPlayerController.setLooping(widget.loop);
@@ -69,6 +77,7 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                         widget.videoPlayerController.setVolume(volume);
                         _animationController.forward(from: 0.0);
                       },
+                      onDoubleTap: widget.onDoubleTap,
                       child: Stack(
                         children: [
                           VideoPlayer(widget.videoPlayerController),
