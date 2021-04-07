@@ -131,10 +131,12 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.grey.shade200,
-                            image: DecorationImage(
-                              alignment: Alignment.topCenter,
-                              image: CachedNetworkImageProvider(widget.videoPlayerController.thumbnail),
-                            ),
+                            image: (widget.videoPlayerController.thumbnail.isEmpty)
+                                ? null
+                                : DecorationImage(
+                                    alignment: Alignment.topCenter,
+                                    image: CachedNetworkImageProvider(widget.videoPlayerController.thumbnail),
+                                  ),
                           ),
                           child: Visibility(
                             visible: (progress != null),
