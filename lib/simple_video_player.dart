@@ -115,14 +115,17 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                               image: CachedNetworkImageProvider(widget.videoPlayerController.thumbnail),
                             ),
                           ),
-                          child: SizedBox(
-                            width: 70,
-                            height: 70,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.5,
-                              backgroundColor: Colors.grey.withOpacity(0.5),
-                              valueColor: AlwaysStoppedAnimation(Colors.white),
-                              value: progress,
+                          child: Visibility(
+                            visible: (progress != null),
+                            child: SizedBox(
+                              width: 70,
+                              height: 70,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                backgroundColor: Colors.grey.withOpacity(0.5),
+                                valueColor: AlwaysStoppedAnimation(Colors.white),
+                                value: progress,
+                              ),
                             ),
                           ),
                         );

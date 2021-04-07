@@ -111,7 +111,7 @@ class SimpleVideoPlayerController extends VideoPlayerController {
     if (!dataSource.startsWith('http')) return;
 
     final _fileDownloadCompleter = Completer<void>();
-    DefaultCacheManager().emptyCache();
+
     _streamSubscription = DefaultCacheManager().getFileStream(dataSource, withProgress: true).listen((response) {
       if (response is DownloadProgress) {
         downloadProgressNotifier.value = response.progress;
