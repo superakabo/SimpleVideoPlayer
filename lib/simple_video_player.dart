@@ -59,7 +59,7 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
             if (widget.autoPlay) widget.videoPlayerController.play();
             _animationController.forward();
           }
-        } else {
+        } else if (info.visibleFraction <= 0.40) {
           if (widget.videoPlayerController.value.isInitialized) {
             widget.videoPlayerController.pause();
           }
