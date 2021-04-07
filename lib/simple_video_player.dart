@@ -70,7 +70,6 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                         _animationController.forward(from: 0.0);
                       },
                       child: Stack(
-                        fit: StackFit.expand,
                         children: [
                           VideoPlayer(widget.videoPlayerController),
                           Positioned(
@@ -112,6 +111,7 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                           decoration: BoxDecoration(
                             color: Colors.grey.shade200,
                             image: DecorationImage(
+                              alignment: Alignment.topCenter,
                               image: CachedNetworkImageProvider(widget.videoPlayerController.thumbnail),
                             ),
                           ),
