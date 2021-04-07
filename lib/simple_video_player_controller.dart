@@ -119,7 +119,9 @@ class SimpleVideoPlayerController extends VideoPlayerController {
 
       if (response is FileInfo) {
         _dataSource = 'file://${response.file.path}';
-        _fileDownloadCompleter.complete();
+        if (!_fileDownloadCompleter.isCompleted) {
+          _fileDownloadCompleter.complete();
+        }
       }
     });
 
