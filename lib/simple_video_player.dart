@@ -51,8 +51,10 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
           widget.onVisibilityChanged!(info);
         }
 
+        final playerValue = widget.videoPlayerController.value;
+
         if (info.visibleFraction >= 0.75) {
-          if (widget.videoPlayerController.value.isInitialized) {
+          if (playerValue.isInitialized) {
             if (widget.autoPlay) widget.videoPlayerController.play();
           } else {
             await widget.videoPlayerController.initialize();
@@ -62,7 +64,7 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
             _animationController.forward();
           }
         } else if (info.visibleFraction <= 0.15) {
-          if (widget.videoPlayerController.value.isInitialized) {
+          if (playerValue.isInitialized && playerValue.isPlaying) {
             widget.videoPlayerController.pause();
           }
         }
