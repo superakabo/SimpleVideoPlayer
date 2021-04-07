@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:simple_video_player/simple_video_player.dart';
 import 'package:simple_video_player/simple_video_player_controller.dart';
 

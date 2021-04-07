@@ -59,6 +59,7 @@ class SimpleVideoPlayerController extends VideoPlayerController {
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
   })  : this._cache = false,
+        _dataSource = 'file://${file.path}',
         super.file(
           file,
           closedCaptionFile: closedCaptionFile,
