@@ -38,27 +38,27 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: widget.videoPlayerController.value.aspectRatio,
-      child: VisibilityDetector(
-        key: ValueKey(widget.videoPlayerController.hashCode),
-        onVisibilityChanged: (VisibilityInfo info) async {
-          if (info.visibleFraction >= 0.75) {
-            await widget.videoPlayerController.initialize();
-            widget.videoPlayerController.setLooping(widget.loop);
-            if (widget.mute) widget.videoPlayerController.setVolume(0.0);
-            if (widget.autoPlay) widget.videoPlayerController.play();
-            _animationController.forward();
-          } else {
-            if (widget.videoPlayerController.value.isInitialized) {
-              widget.videoPlayerController.pause();
-            }
+    return VisibilityDetector(
+      key: ValueKey(widget.videoPlayerController.hashCode),
+      onVisibilityChanged: (VisibilityInfo info) async {
+        if (info.visibleFraction >= 0.75) {
+          await widget.videoPlayerController.initialize();
+          widget.videoPlayerController.setLooping(widget.loop);
+          if (widget.mute) widget.videoPlayerController.setVolume(0.0);
+          if (widget.autoPlay) widget.videoPlayerController.play();
+          _animationController.forward();
+        } else {
+          if (widget.videoPlayerController.value.isInitialized) {
+            widget.videoPlayerController.pause();
           }
-        },
-        child: ValueListenableBuilder<VideoPlayerValue>(
-          valueListenable: widget.videoPlayerController,
-          builder: (_, videoPlayerValue, __) {
-            return AnimatedSwitcher(
+        }
+      },
+      child: ValueListenableBuilder<VideoPlayerValue>(
+        valueListenable: widget.videoPlayerController,
+        builder: (_, videoPlayerValue, __) {
+          return AspectRatio(
+            aspectRatio: videoPlayerValue.aspectRatio,
+            child: AnimatedSwitcher(
               duration: Duration(milliseconds: 330),
               child: (videoPlayerValue.isInitialized)
                   ? GestureDetector(
@@ -131,9 +131,9 @@ class _SimpleVideoPlayerState extends State<SimpleVideoPlayer> with SingleTicker
                         );
                       },
                     ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
